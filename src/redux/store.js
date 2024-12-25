@@ -13,7 +13,7 @@ let api = createApi({
 
 		const response = await fetch(`${baseUrl}${url}?${queryParams.toString()}`);
 		const json = await response.json();
-        
+
 		if (!response.ok) {
 			throw new Error(`HTTP Error! Status: ${response.status}`);
 		}
