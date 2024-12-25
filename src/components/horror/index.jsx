@@ -1,14 +1,12 @@
 import React from "react";
-import {usePopularMovies} from "../../hooks";
+import {useGetPopularMoviesQuery} from "../../redux/apiSlice";
 
 const HorrorComponent = () => {
-	let {data, isLoading, error} = usePopularMovies();
+	const {data, isLoading, error} = useGetPopularMoviesQuery(1);
 
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error: {error.message}</div>;
-
-	console.log(data);
-
+	if (!isLoading) console.log(data);
 	return (
 		<section className="w-[90%] mx-auto grid grid-cols-5 gap-4 mt-12">
 			<div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
