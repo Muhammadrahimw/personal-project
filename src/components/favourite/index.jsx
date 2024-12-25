@@ -99,7 +99,6 @@ const FavouriteComponent = () => {
 			) : (
 				<p className="text-xl text-white">Sizda saralangan film yo'q</p>
 			)}
-			<p className="text-xl text-white">Sizda saralangan filmlar yo'q</p>
 		</section>
 	);
 };
