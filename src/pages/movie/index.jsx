@@ -1,7 +1,11 @@
-import React from "react";
+import MovieComponent from "../../components/movie";
 
 const Movie = () => {
-	return <div>Movie</div>;
+	return (
+		<>
+			<MovieComponent />
+		</>
+	);
 };
 
 export default Movie;

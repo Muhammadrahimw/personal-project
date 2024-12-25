@@ -7,7 +7,7 @@ import {Rate} from "antd";
 import {IoHeart, IoHeartOutline} from "react-icons/io5";
 import {Link} from "react-router-dom";
 
-const HorrorComponent = () => {
+const ComedyComponent = () => {
 	let {isLoading, error} = useGetPopularMoviesQuery(1);
 	let [addFavourites] = useAddFavouritesMutation();
 	let [favourite, setFavourite] = useState([]);
@@ -72,11 +72,11 @@ const HorrorComponent = () => {
 	};
 
 	return (
-		<section className="w-[90%] mx-auto mt-12">
-			<h2 className="text-[2.5em] text-white">Horror</h2>
+		<section className="w-[90%] mx-auto mt-8">
+			<h2 className="text-[2.5em] text-white">Comedy</h2>
 			<div className="grid grid-cols-5 gap-4 mt-4 max-[1380px]:text-sm tr max-[1240px]:text-xs max-[1080px]:text-sm max-[1080px]:grid-cols-4 max-[980px]:text-xs max-[850px]:grid-cols-3 max-[850px]:text-sm max-[720px]:text-xs max-sm:text-[0.55em] max-[480px]:text-[0.35em] max-[380px]:grid-cols-2 max-[380px]:text-[0.55em]">
 				{allData?.map((movie) =>
-					movie.genre_ids.includes(27) ? (
+					movie.genre_ids.includes(35) ? (
 						<div
 							key={movie.id}
 							className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -126,8 +126,4 @@ const HorrorComponent = () => {
 	);
 };
 
-export default HorrorComponent;
-
-{
-	/* <IoHeart className="text-3xl" /> */
-}
+export default ComedyComponent;

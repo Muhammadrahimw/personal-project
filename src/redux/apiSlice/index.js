@@ -4,4 +4,5 @@ export let {
 	useGetPopularMoviesQuery,
 	useSearchMoviesQuery,
 	useGetMovieDetailsQuery,
+	useAddFavouritesMutation,
 } = api;

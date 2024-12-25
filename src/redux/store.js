@@ -5,6 +5,9 @@ import {setupListeners} from "@reduxjs/toolkit/query";
 let api = createApi({
 	reducerPath: `api`,
 	baseQuery: async ({url, params}) => {
+		if (!url) {
+			throw new Error("URL parameter is missing in baseQuery!");
+		}
 		const baseUrl = import.meta.env.VITE_APP_API_URL;
 		const apiKey = import.meta.env.VITE_APP_API_KEY;
 
@@ -28,12 +31,25 @@ let api = createApi({
 				params: {page},
 			}),
 		}),
-
 		searchMovies: builder.query({
 			query: (query) => ({url: `/search/movie`, params: {query}}),
 		}),
 		getMovieDetails: builder.query({
 			query: (movieId) => ({url: `/movie/${movieId}`, params: {}}),
+		}),
+		addFavourites: builder.mutation({
+			queryFn: (info) => {
+				let favourites = JSON.parse(localStorage.getItem("favourites")) || [];
+				const isFavourite = favourites.some((fav) => fav.id === info.id);
+				if (isFavourite) {
+					favourites = favourites.filter((fav) => fav.id !== info.id);
+				} else {
+					favourites.push(info);
+				}
+				localStorage.setItem("favourites", JSON.stringify(favourites));
+
+				return {data: info};
+			},
 		}),
 	}),
 });

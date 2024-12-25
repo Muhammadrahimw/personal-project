@@ -21,3 +21,13 @@ tr {
 	background-size: cover;
 	background-position: center;
 }
+
+.custom-rate .ant-rate-star .ant-rate-star-first,
+.custom-rate .ant-rate-star .ant-rate-star-second {
+	color: #1d4ed8;
+}
+
+.custom-rate .ant-rate-star:not(.ant-rate-star-full) .ant-rate-star-first,
+.custom-rate .ant-rate-star:not(.ant-rate-star-full) .ant-rate-star-second {
+	color: rgba(128, 128, 128, 0.582);
+}
