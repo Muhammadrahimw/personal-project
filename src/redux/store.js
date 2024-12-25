@@ -18,7 +18,7 @@ let api = createApi({
 			throw new Error(`HTTP Error! Status: ${response.status}`);
 		}
 
-		return json;
+		return {data: json};
 	},
 
 	endpoints: (builder) => ({
