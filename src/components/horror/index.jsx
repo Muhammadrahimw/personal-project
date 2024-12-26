@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
 	useAddFavouritesMutation,
+	useAddShopsMutation,
 	useGetPopularMoviesQuery,
 } from "../../redux/apiSlice";
 import {Rate} from "antd";
@@ -11,6 +12,8 @@ const HorrorComponent = () => {
 	let {isLoading, error} = useGetPopularMoviesQuery(1);
 	let [addFavourites] = useAddFavouritesMutation();
 	let [favourite, setFavourite] = useState([]);
+	let [addShops] = useAddShopsMutation();
+	let [shop, setShop] = useState([]);
 	let [page, setPage] = useState([1, 2, 3]);
 	let allData = [];
 
@@ -57,6 +60,25 @@ const HorrorComponent = () => {
 		}
 	};
 
+	let shopFunc = async (movie) => {
+		let updatedShops = [...shop];
+		const movieExists = updatedShops.some((fav) => fav.id === movie.id);
+
+		if (movieExists) {
+			updatedShops = updatedShops.filter((fav) => fav.id !== movie.id);
+		} else {
+			updatedShops.push(movie);
+		}
+
+		try {
+			await addShops(movie);
+			setShop(updatedShops);
+			localStorage.setItem("shopMovie", JSON.stringify(updatedShops));
+		} catch (e) {
+			console.error("Error updating shopMovie:", e);
+		}
+	};
+
 	if (isLoading) return <div>Loading...</div>;
 	if (error) return <div>Error: {error.message}</div>;
 
@@ -75,10 +97,10 @@ const HorrorComponent = () => {
 		<section className="w-[90%] mx-auto mt-12">
 			<h2 className="text-[2.5em] text-white">Horror</h2>
 			<div className="grid grid-cols-5 gap-4 mt-4 max-[1380px]:text-sm tr max-[1240px]:text-xs max-[1080px]:text-sm max-[1080px]:grid-cols-4 max-[980px]:text-xs max-[850px]:grid-cols-3 max-[850px]:text-sm max-[720px]:text-xs max-sm:text-[0.55em] max-[480px]:text-[0.35em] max-[380px]:grid-cols-2 max-[380px]:text-[0.55em]">
-				{allData?.map((movie) =>
+				{allData?.map((movie, index) =>
 					movie.genre_ids.includes(27) ? (
 						<div
-							key={movie.id}
+							key={movie.id - index}
 							className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
 							<Link to={`/movie/${movie.id}`} state={{movie}}>
 								<div
@@ -102,7 +124,9 @@ const HorrorComponent = () => {
 									</span>
 								</div>
 								<div className="flex items-center justify-between gap-4">
-									<div className="flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-white bg-blue-700 rounded-[0.5em] cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 max-sm:py-4">
+									<div
+										onClick={() => shopFunc(movie)}
+										className="flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-white bg-blue-700 rounded-[0.5em] cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 max-sm:py-4">
 										Add to cart
 									</div>
 									<div
@@ -127,7 +151,3 @@ const HorrorComponent = () => {
 };
 
 export default HorrorComponent;
-
-{
-	/* <IoHeart className="text-3xl" /> */
-}

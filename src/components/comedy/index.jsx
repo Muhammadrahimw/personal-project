@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
 	useAddFavouritesMutation,
+	useAddShopsMutation,
 	useGetPopularMoviesQuery,
 } from "../../redux/apiSlice";
 import {Rate} from "antd";
@@ -11,6 +12,8 @@ const ComedyComponent = () => {
 	let {isLoading, error} = useGetPopularMoviesQuery(1);
 	let [addFavourites] = useAddFavouritesMutation();
 	let [favourite, setFavourite] = useState([]);
+	let [addShops] = useAddShopsMutation();
+	let [shop, setShop] = useState([]);
 	let [page, setPage] = useState([1, 2, 3]);
 	let allData = [];
 
@@ -54,6 +57,25 @@ const ComedyComponent = () => {
 			localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
 		} catch (e) {
 			console.error("Error updating favourites:", e);
+		}
+	};
+
+	let shopFunc = async (movie) => {
+		let updatedShops = [...shop];
+		const movieExists = updatedShops.some((fav) => fav.id === movie.id);
+
+		if (movieExists) {
+			updatedShops = updatedShops.filter((fav) => fav.id !== movie.id);
+		} else {
+			updatedShops.push(movie);
+		}
+
+		try {
+			await addShops(movie);
+			setShop(updatedShops);
+			localStorage.setItem("shopMovie", JSON.stringify(updatedShops));
+		} catch (e) {
+			console.error("Error updating shopMovie:", e);
 		}
 	};
 
@@ -102,7 +124,9 @@ const ComedyComponent = () => {
 									</span>
 								</div>
 								<div className="flex items-center justify-between gap-4">
-									<div className="flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-white bg-blue-700 rounded-[0.5em] cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 max-sm:py-4">
+									<div
+										onClick={() => shopFunc(movie)}
+										className="flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-white bg-blue-700 rounded-[0.5em] cursor-pointer hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 max-sm:py-4">
 										Add to cart
 									</div>
 									<div

@@ -51,6 +51,18 @@ let api = createApi({
 				return {data: info};
 			},
 		}),
+		addShops: builder.mutation({
+			queryFn: (info) => {
+				let shopMovie = JSON.parse(localStorage.getItem("shopMovie")) || [];
+				let inShopMovie = shopMovie.some((shop) => shop.id === info.id);
+				if (!inShopMovie) {
+					shopMovie.push(info);
+				}
+				localStorage.setItem("shopMovie", JSON.stringify(shopMovie));
+
+				return {data: info};
+			},
+		}),
 	}),
 });
 
